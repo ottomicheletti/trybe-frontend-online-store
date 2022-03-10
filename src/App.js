@@ -1,10 +1,18 @@
-import React, { Component } from 'react';
 import './App.css';
+
+import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import SearchPage from './pages/SearchPage';
 
 class App extends Component {
   render() {
     return (
-      <div> Requisito 1 </div>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" component={ SearchPage } />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
