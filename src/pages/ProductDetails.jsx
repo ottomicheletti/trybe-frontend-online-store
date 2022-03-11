@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getProductDetails } from '../services/api';
+import React, { Component } from 'react';
 import Header from '../components/Header';
+import { getProductDetails } from '../services/api';
+import './ProductDetails.css';
 
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = { results: null };
+    this.state = { 
+      results: null
+    };
   }
 
   async componentDidMount() {
@@ -16,15 +19,15 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const { results:
-      {
-        // id,
-        title,
-        price,
-        thumbnail,
-        attributes,
-        // available_quantity
-      } } = this.state;
+    // const { results: {
+    //     id,
+    //     title,
+    //     price,
+    //     thumbnail,
+    //     attributes,
+    //     available_quantity
+    //    } } = this.state;
+    const { results } = this.state;
 
     return (
       <div>
@@ -32,16 +35,18 @@ class ProductDetails extends Component {
         { results
           ? (
             <section>
-              <p data-testid="product-detail-name">{ `${title} - R$${price}` }</p>
-              <img src={ thumbnail } alt={ title } />
-              <p>0</p>
               <div>
-                {attributes.map((att) => (
-                  <li key={ att.source }>
+                <p data-testid="product-detail-name">{`${results.title} - R$${results.price}`}</p>
+                <img src={ results.thumbnail } alt={ results.title } />
+                <p>0</p>
+              </div>
+              <ul>
+                {results.attributes.map((att, index) => (
+                  <li key={ index }>
                     <p>{`${att.name} - ${att.value_name}`}</p>
                   </li>
                 ))}
-              </div>
+              </ul>
             </section>
           )
           : <p>loading...</p>}
