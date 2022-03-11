@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
-// import { Link } from 'react-router-dom';
+
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import './SearchPage.css';
 
@@ -86,13 +87,14 @@ class SearchPage extends Component {
         {results.length > 0
           ? (
             results.map(({ id, title, price, thumbnail }) => (
-              <ProductCard
-                key={ id }
-                id={ id }
-                title={ title }
-                price={ price }
-                thumbnail={ thumbnail }
-              />
+              <Link data-testid="product-detail-link" to={ `/product/${id}` } key={ id }>
+                <ProductCard
+                  id={ id }
+                  title={ title }
+                  price={ price }
+                  thumbnail={ thumbnail }
+                />
+              </Link>
             ))
           )
           : (
