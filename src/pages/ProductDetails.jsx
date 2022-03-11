@@ -7,8 +7,8 @@ import './ProductDetails.css';
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      results: null
+    this.state = {
+      results: null,
     };
   }
 
@@ -19,16 +19,7 @@ class ProductDetails extends Component {
   }
 
   render() {
-    // const { results: {
-    //     id,
-    //     title,
-    //     price,
-    //     thumbnail,
-    //     attributes,
-    //     available_quantity
-    //    } } = this.state;
     const { results } = this.state;
-
     return (
       <div>
         <Header />
@@ -36,7 +27,9 @@ class ProductDetails extends Component {
           ? (
             <section>
               <div>
-                <p data-testid="product-detail-name">{`${results.title} - R$${results.price}`}</p>
+                <p data-testid="product-detail-name">
+                  {`${results.title} - R$${results.price}`}
+                </p>
                 <img src={ results.thumbnail } alt={ results.title } />
                 <p>0</p>
               </div>
