@@ -5,12 +5,14 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import SearchPage from './pages/SearchPage';
 import ShoppingCart from './pages/ShoppingCart';
+import ProductDetails from './pages/ProductDetails';
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <Switch>
+          <Route exact path="/product/:id" component={ ProductDetails } />
           <Route exact path="/shoppingcart" component={ ShoppingCart } />
           <Route exact path="/" component={ SearchPage } />
         </Switch>
