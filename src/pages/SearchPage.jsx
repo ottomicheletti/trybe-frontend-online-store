@@ -23,20 +23,20 @@ class SearchPage extends Component {
     });
   }
 
-  handleChange = ({target: { value, type }}) => {
+  handleChange = ({ target: { value, type } }) => {
     // ao ser chamada, a função coloca o Id do input presente no target.event dentro de um estado chamado checkedId
     if (type === 'radio') {
-      this.setState({ checkedId:  value });
+      this.setState({ checkedId: value });
     }
     if (type === 'text') {
-      this.setState({ query: value })
-    } 
+      this.setState({ query: value });
+    }
   }
 
   handleClick = async () => {
     const { checkedId, query } = this.state;
-    const result = await getProductsFromCategoryAndQuery( checkedId, query );
-    this.setState({ results: result.results});
+    const result = await getProductsFromCategoryAndQuery(checkedId, query);
+    this.setState({ results: result.results });
   }
 
   render() {
@@ -45,26 +45,36 @@ class SearchPage extends Component {
       <>
         <Header />
         <div>
-          <input type="text" name="query-input" placeholder="Pesquisar" data-testid="query-input" onChange={ this.handleChange }/>
+          <input
+            type="text"
+            name="query-input"
+            placeholder="Pesquisar"
+            data-testid="query-input"
+            onChange={ this.handleChange }
+          />
           <button
+            type="button"
             data-testid="query-button"
             onClick={ this.handleClick }
           >
             Pesquisar
           </button>
         </div>
-        <div className="categories" >
+        <div className="categories">
           {categories.map((cat) => (
             <label
-              htmlFor={cat.name}
+              htmlFor={ cat.name }
               key={ cat.id }
               data-testid="category"
             >
-              <input type="radio" name={cat.name} value={cat.id}
-              //chama método handleChange
-              onChange={ this.handleChange }
-              //verifica se o Id do event.target é igual ao Id da categoria presente no input
-              checked={ checkedId === cat.id }
+              <input
+                type="radio"
+                name={ cat.name }
+                value={ cat.id }
+                // chama método handleChange
+                onChange={ this.handleChange }
+                // verifica se o Id do event.target é igual ao Id da categoria presente no input
+                checked={ checkedId === cat.id }
               />
               {cat.name}
             </label>
@@ -72,16 +82,21 @@ class SearchPage extends Component {
         </div>
 
         {results.length > 0
-        ? (
-          results.map(({ id, title, price, thumbnail }) => (
-            <ProductCard key={ id } id={ id } title={ title } price={ price } thumbnail={ thumbnail } />
-          ))
-        )
-        : (
-          <div data-testid="home-initial-message">
-            Digite algum termo de pesquisa ou escolha uma categoria.
-          </div>)
-        }
+          ? (
+            results.map(({ id, title, price, thumbnail }) => (
+              <ProductCard
+                key={ id }
+                id={ id }
+                title={ title }
+                price={ price }
+                thumbnail={ thumbnail }
+              />
+            ))
+          )
+          : (
+            <div data-testid="home-initial-message">
+              Digite algum termo de pesquisa ou escolha uma categoria.
+            </div>)}
       </>
     );
   }
