@@ -26,7 +26,9 @@ class SearchPage extends Component {
   handleChange = ({ target: { value, type } }) => {
     // ao ser chamada, a função coloca o Id do input presente no target.event dentro de um estado chamado checkedId
     if (type === 'radio') {
-      this.setState({ checkedId: value });
+      this.setState({
+        checkedId: value,
+      }, () => this.handleClick());
     }
     if (type === 'text') {
       this.setState({ query: value });
@@ -65,9 +67,9 @@ class SearchPage extends Component {
             <label
               htmlFor={ cat.name }
               key={ cat.id }
-              data-testid="category"
             >
               <input
+                data-testid="category"
                 type="radio"
                 name={ cat.name }
                 value={ cat.id }
