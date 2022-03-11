@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import ProductCard from '../components/ProductCard';
 // import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import './SearchPage.css';
 
 class SearchPage extends Component {
@@ -11,6 +12,8 @@ class SearchPage extends Component {
     this.state = {
       categories: [],
       checkedId: '',
+      query: '',
+      results: [],
     };
   }
 
@@ -20,18 +23,35 @@ class SearchPage extends Component {
     });
   }
 
-  handleChange = ({target: { value }}) => {
+  handleChange = ({target: { value, type }}) => {
     // ao ser chamada, a função coloca o Id do input presente no target.event dentro de um estado chamado checkedId
-    this.setState({ checkedId:  value });
+    if (type === 'radio') {
+      this.setState({ checkedId:  value });
+    }
+    if (type === 'text') {
+      this.setState({ query: value })
+    } 
+  }
+
+  handleClick = async () => {
+    const { checkedId, query } = this.state;
+    const result = await getProductsFromCategoryAndQuery( checkedId, query );
+    this.setState({ results: result.results});
   }
 
   render() {
-    const { categories, checkedId } = this.state;
+    const { categories, checkedId, results } = this.state;
     return (
       <>
         <Header />
-        <div data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
+        <div>
+          <input type="text" name="query-input" placeholder="Pesquisar" data-testid="query-input" onChange={ this.handleChange }/>
+          <button
+            data-testid="query-button"
+            onClick={ this.handleClick }
+          >
+            Pesquisar
+          </button>
         </div>
         <div className="categories" >
           {categories.map((cat) => (
@@ -50,6 +70,18 @@ class SearchPage extends Component {
             </label>
           ))}
         </div>
+
+        {results.length > 0
+        ? (
+          results.map(({ id, title, price, thumbnail }) => (
+            <ProductCard key={ id } id={ id } title={ title } price={ price } thumbnail={ thumbnail } />
+          ))
+        )
+        : (
+          <div data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </div>)
+        }
       </>
     );
   }
