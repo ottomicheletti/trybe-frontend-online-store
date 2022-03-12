@@ -15,6 +15,7 @@ class SearchPage extends Component {
       checkedId: '',
       query: '',
       results: [],
+      currentProducts: [],
     };
   }
 
@@ -40,6 +41,19 @@ class SearchPage extends Component {
     const { checkedId, query } = this.state;
     const result = await getProductsFromCategoryAndQuery(checkedId, query);
     this.setState({ results: result.results });
+  }
+
+  sendCart = (id, title, price, thumbnail) => {
+    // const { currentProducts } = this.state;
+    const newProduct = {
+      id,
+      title,
+      price,
+      thumbnail,
+    };
+    console.log(newProduct);
+    this.setState((prevState) => ({ currentProducts:
+      [...prevState.currentProducts, newProduct] }));
   }
 
   render() {
@@ -87,14 +101,27 @@ class SearchPage extends Component {
         {results.length > 0
           ? (
             results.map(({ id, title, price, thumbnail }) => (
-              <Link data-testid="product-detail-link" to={ `/product/${id}` } key={ id }>
-                <ProductCard
-                  id={ id }
-                  title={ title }
-                  price={ price }
-                  thumbnail={ thumbnail }
-                />
-              </Link>
+              <div key={ id }>
+                <Link data-testid="product-detail-link" to={ `/product/${id}` }>
+                  <ProductCard
+                    id={ id }
+                    title={ title }
+                    price={ price }
+                    thumbnail={ thumbnail }
+                  />
+                </Link>
+                <button
+                  type="button"
+                  onClick={ () => this.sendCart(
+                    id,
+                    title,
+                    price,
+                    thumbnail,
+                  ) }
+                >
+                  Adicionar ao carrinho
+                </button>
+              </div>
             ))
           )
           : (

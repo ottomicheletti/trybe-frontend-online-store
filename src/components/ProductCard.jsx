@@ -16,7 +16,6 @@ class ProductCard extends Component {
         <h3>{ title }</h3>
         <p>{`R$ ${price}`}</p>
         {/* <p>{`Quantidade: ${ available_quantity }`}</p> */}
-        <button type="button">Adicionar ao carrinho</button>
       </li>
     );
   }
