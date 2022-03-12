@@ -16,6 +16,7 @@ class SearchPage extends Component {
       checkedId: '',
       query: '',
       results: [],
+      productList: [],
     };
   }
 
@@ -23,6 +24,11 @@ class SearchPage extends Component {
     getCategories().then((data) => {
       this.setState({ categories: data });
     });
+
+    const productListCart = localStorage.getItem('productList');
+    return productListCart
+      ? this.setState({ productList: JSON.parse(productListCart) })
+      : localStorage.setItem('productList', JSON.stringify([]));
   }
 
   handleChange = ({ target: { value, type } }) => {
@@ -44,15 +50,16 @@ class SearchPage extends Component {
   }
 
   sendCart = (id, title, price, thumbnail) => {
+    const { productList } = this.state;
     const newProduct = {
       id,
       title,
       price,
       thumbnail,
     };
-    const productList = [];
-    productList.push([...productList, newProduct]);
-    console.log(productList);
+    const newProductList = [...productList, newProduct];
+    this.setState({ productList: newProductList },
+      () => (localStorage.setItem('productList', JSON.stringify(newProductList))));
   }
 
   render() {
@@ -110,6 +117,7 @@ class SearchPage extends Component {
                   />
                 </Link>
                 <button
+                  data-testid="product-add-to-cart"
                   type="button"
                   onClick={ () => this.sendCart(
                     id,
