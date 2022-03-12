@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 
@@ -15,7 +16,6 @@ class SearchPage extends Component {
       checkedId: '',
       query: '',
       results: [],
-      currentProducts: [],
     };
   }
 
@@ -44,16 +44,15 @@ class SearchPage extends Component {
   }
 
   sendCart = (id, title, price, thumbnail) => {
-    // const { currentProducts } = this.state;
     const newProduct = {
       id,
       title,
       price,
       thumbnail,
     };
-    console.log(newProduct);
-    this.setState((prevState) => ({ currentProducts:
-      [...prevState.currentProducts, newProduct] }));
+    const productList = [];
+    productList.push([...productList, newProduct]);
+    console.log(productList);
   }
 
   render() {
