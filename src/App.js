@@ -8,7 +8,7 @@ import ShoppingCart from './pages/ShoppingCart';
 class App extends Component {
   componentDidMount() {
     const productListCart = localStorage.getItem('productList');
-    return productListCart && localStorage.setItem('productList', JSON.stringify([]));
+    return !productListCart && localStorage.setItem('productList', JSON.stringify([]));
   }
 
   render() {

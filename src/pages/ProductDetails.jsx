@@ -8,7 +8,14 @@ class ProductDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: null,
+      results: {
+        title: '',
+        id: '',
+        price: '',
+        thumbnail: '',
+        attributes: [],
+      },
+      productList: [],
     };
   }
 
@@ -16,25 +23,43 @@ class ProductDetails extends Component {
     const { match: { params: { id } } } = this.props;
     const results = await getProductDetails(id);
     this.setState({ results });
+    const productListCart = localStorage.getItem('productList');
+    return productListCart
+      ? this.setState({ productList: JSON.parse(productListCart) })
+      : localStorage.setItem('productList', JSON.stringify([]));
+  }
+
+  sendCart = (id, title, price, thumbnail) => {
+    const { productList } = this.state;
+    const newProduct = {
+      id,
+      title,
+      price,
+      thumbnail,
+    };
+    const newProductList = [...productList, newProduct];
+    this.setState({ productList: newProductList },
+      () => (localStorage.setItem('productList', JSON.stringify(newProductList))));
   }
 
   render() {
-    const { results } = this.state;
+    const { results:
+      { title, id, price, thumbnail, attributes }, results, productList } = this.state;
     return (
       <div>
-        <Header />
+        <Header cartQuantity={ productList.length } />
         { results
           ? (
             <section>
               <div>
                 <p data-testid="product-detail-name">
-                  {`${results.title} - R$${results.price}`}
+                  {`${title} - R$${price}`}
                 </p>
-                <img src={ results.thumbnail } alt={ results.title } />
+                <img src={ thumbnail } alt={ title } />
                 <p>0</p>
               </div>
               <ul>
-                {results.attributes.map((att, index) => (
+                {attributes.map((att, index) => (
                   <li key={ index }>
                     <p>{`${att.name} - ${att.value_name}`}</p>
                   </li>
@@ -43,6 +68,18 @@ class ProductDetails extends Component {
             </section>
           )
           : <p>loading...</p>}
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          onClick={ () => this.sendCart(
+            id,
+            title,
+            price,
+            thumbnail,
+          ) }
+        >
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }

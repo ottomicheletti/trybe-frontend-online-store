@@ -21,7 +21,7 @@ class ShoppingCart extends Component {
     const { productList } = this.state;
     return (
       <div>
-        <Header />
+        <Header cartQuantity={ productList.length } />
         { productList.length > 0
           ? (
             productList.map(({ id, title, price, thumbnail }) => (
