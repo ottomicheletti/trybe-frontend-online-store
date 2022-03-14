@@ -64,7 +64,7 @@ class SearchPage extends Component {
     const { categories, checkedId, results, productList } = this.state;
     return (
       <>
-         <Header cartQuantity={ productList.length }/>
+        <Header cartQuantity={ productList.length } />
         <div>
           <input
             type="text"

@@ -44,10 +44,11 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const { results: { title, id, price, thumbnail, attributes }, results, productList } = this.state;
+    const { results:
+      { title, id, price, thumbnail, attributes }, results, productList } = this.state;
     return (
       <div>
-        <Header cartQuantity={ productList.length }/>
+        <Header cartQuantity={ productList.length } />
         { results
           ? (
             <section>
@@ -68,18 +69,18 @@ class ProductDetails extends Component {
             </section>
           )
           : <p>loading...</p>}
-           <button
-                  data-testid="product-detail-add-to-cart"
-                  type="button"
-                  onClick={ () => this.sendCart(
-                    id,
-                    title,
-                    price,
-                    thumbnail,
-                  ) }
-                >
-                  Adicionar ao carrinho
-                </button>
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          onClick={ () => this.sendCart(
+            id,
+            title,
+            price,
+            thumbnail,
+          ) }
+        >
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }
