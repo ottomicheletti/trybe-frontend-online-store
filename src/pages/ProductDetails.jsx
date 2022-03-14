@@ -36,7 +36,6 @@ class ProductDetails extends Component {
       title,
       price,
       thumbnail,
-      // attributes,
     };
     const newProductList = [...productList, newProduct];
     this.setState({ productList: newProductList },

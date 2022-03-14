@@ -1,0 +1,10 @@
+nav {
+  display: flex;
+  justify-content: space-around;
+  margin: 0.5em 0;
+  width: 200px;
+}
+
+li {
+  list-style-type: none;
+}
