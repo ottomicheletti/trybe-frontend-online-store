@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 class ProductCard extends Component {
   render() {
@@ -13,10 +13,9 @@ class ProductCard extends Component {
     return (
       <li className="card" value={ id } data-testid="product">
         <img src={ thumbnail } alt={ title } />
-        <h3>{ title }</h3>
+        <h3 data-testid="shopping-cart-product-name">{ title }</h3>
         <p>{`R$ ${price}`}</p>
         {/* <p>{`Quantidade: ${ available_quantity }`}</p> */}
-        <button type="button">Adicionar ao carrinho</button>
       </li>
     );
   }

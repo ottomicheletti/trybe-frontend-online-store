@@ -1,13 +1,16 @@
-import './App.css';
-
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
+import './App.css';
+import ProductDetails from './pages/ProductDetails';
 import SearchPage from './pages/SearchPage';
 import ShoppingCart from './pages/ShoppingCart';
-import ProductDetails from './pages/ProductDetails';
 
 class App extends Component {
+  componentDidMount() {
+    const productListCart = localStorage.getItem('productList');
+    return productListCart && localStorage.setItem('productList', JSON.stringify([]));
+  }
+
   render() {
     return (
       <BrowserRouter>
