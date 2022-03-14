@@ -36,6 +36,7 @@ class ProductDetails extends Component {
       title,
       price,
       thumbnail,
+      quantity: 1,
     };
     const newProductList = [...productList, newProduct];
     this.setState({ productList: newProductList },
@@ -45,9 +46,10 @@ class ProductDetails extends Component {
   render() {
     const { results:
       { title, id, price, thumbnail, attributes }, results, productList } = this.state;
+    const cartQuantity = productList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <div>
-        <Header cartQuantity={ productList.length } />
+        <Header cartQuantity={ cartQuantity } />
         { results
           ? (
             <section>

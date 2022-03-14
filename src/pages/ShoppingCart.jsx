@@ -17,21 +17,80 @@ class ShoppingCart extends Component {
     }
   }
 
+  removeItemFromCart = ({ target: { value } }) => {
+    const { productList } = this.state;
+    const newProductList = productList.filter((product) => product.id !== value);
+    this.setState({ productList: newProductList });
+    localStorage.setItem('productList', JSON.stringify(newProductList));
+  }
+
+  subAndAddItems = ({ target: { value, name } }) => {
+    const { productList } = this.state;
+    const itemMatch = productList.find((product) => product.id === value);
+    const index = productList.indexOf(itemMatch);
+
+    if (name === 'add') {
+      const cont = itemMatch.quantity + 1;
+      Object.assign(itemMatch, { quantity: cont });
+      productList.splice(index, 1, itemMatch);
+      this.setState({ productList });
+    } else {
+      const cont = itemMatch.quantity > 1
+        ? itemMatch.quantity - 1
+        : itemMatch.quantity = 1;
+      Object.assign(itemMatch, { quantity: cont });
+      productList.splice(index, 1, itemMatch);
+      this.setState({ productList });
+    }
+  };
+
   render() {
     const { productList } = this.state;
+    const cartQuantity = productList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <div>
-        <Header cartQuantity={ productList.length } />
+        <Header cartQuantity={ cartQuantity } />
         { productList.length > 0
           ? (
-            productList.map(({ id, title, price, thumbnail }) => (
-              <ProductCard
-                key={ id }
-                id={ id }
-                title={ title }
-                price={ price }
-                thumbnail={ thumbnail }
-              />
+            productList.map(({ id, title, price, thumbnail, quantity }, index) => (
+              <div key={ index }>
+                <ProductCard
+                  id={ id }
+                  title={ title }
+                  price={ price }
+                  thumbnail={ thumbnail }
+                />
+                <button
+                  name="remove"
+                  value={ id }
+                  onClick={ this.removeItemFromCart }
+                  type="button"
+                >
+                  remover
+
+                </button>
+                <button
+                  data-testid="product-increase-quantity"
+                  name="add"
+                  value={ id }
+                  onClick={ this.subAndAddItems }
+                  type="button"
+                >
+                  mais
+
+                </button>
+                <p data-testid="shopping-cart-product-quantity">{ quantity }</p>
+                <button
+                  data-testid="product-decrease-quantity"
+                  name="sub"
+                  value={ id }
+                  onClick={ this.subAndAddItems }
+                  type="button"
+                >
+                  menos
+
+                </button>
+              </div>
             ))
           )
           : (

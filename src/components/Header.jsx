@@ -15,7 +15,7 @@ class Header extends Component {
           <li>
             <Link data-testid="shopping-cart-button" to="/shoppingcart">Carrinho</Link>
           </li>
-          <li data-testid="shopping-cart-product-quantity">
+          <li>
             {cartQuantity}
           </li>
         </nav>

@@ -54,6 +54,7 @@ class SearchPage extends Component {
       title,
       price,
       thumbnail,
+      quantity: 1,
     };
     const newProductList = [...productList, newProduct];
     this.setState({ productList: newProductList },
@@ -62,9 +63,10 @@ class SearchPage extends Component {
 
   render() {
     const { categories, checkedId, results, productList } = this.state;
+    const cartQuantity = productList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <>
-        <Header cartQuantity={ productList.length } />
+        <Header cartQuantity={ cartQuantity } />
         <div>
           <input
             type="text"
