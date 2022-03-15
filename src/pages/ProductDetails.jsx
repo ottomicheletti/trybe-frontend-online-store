@@ -16,6 +16,10 @@ class ProductDetails extends Component {
         attributes: [],
       },
       productList: [],
+      emailInput: '',
+      detailsInput: '',
+      isChecked: [false, false, false, false, false],
+      evaluations: [],
     };
   }
 
@@ -29,6 +33,13 @@ class ProductDetails extends Component {
     }
     const results = await getProductDetails(id);
     this.setState({ results });
+
+    const evaluations = localStorage.getItem('evaluations');
+    if (evaluations) {
+      this.setState({ evaluations: JSON.parse(evaluations) });
+    } else {
+      localStorage.setItem('evaluations', JSON.stringify([]));
+    }
   }
 
   sendCart = (id, title, price, thumbnail) => {
@@ -45,9 +56,44 @@ class ProductDetails extends Component {
       () => (localStorage.setItem('productList', JSON.stringify(newProductList))));
   }
 
+  handleChange = ({ target: { value, name, type } }) => {
+    const { isChecked } = this.state;
+    if (type === 'checkbox') {
+      const newState = [];
+      isChecked.forEach((_check, index) => {
+        if (value <= index) {
+          newState.push(false);
+        } else {
+          newState.push(true);
+        }
+        this.setState({ isChecked: newState });
+      });
+    } else {
+      this.setState({ [name]: value });
+    }
+  }
+
+  submitRating = (event) => {
+    event.preventDefault();
+    const { emailInput, detailsInput, isChecked } = this.state;
+    const newRating = { emailInput, detailsInput, isChecked };
+    this.setState((prevState) => (
+      { evaluations: [...prevState.evaluations, newRating] }
+    ), () => {
+      const { evaluations } = this.state;
+      localStorage.setItem('evaluations', JSON.stringify(evaluations));
+    });
+    this.setState({
+      emailInput: '',
+      detailsInput: '',
+      isChecked: [false, false, false, false, false],
+    });
+  }
+
   render() {
     const { results:
       { title, id, price, thumbnail, attributes }, results, productList } = this.state;
+    const { emailInput, detailsInput, isChecked, evaluations } = this.state;
     const cartQuantity = productList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <div>
@@ -84,6 +130,83 @@ class ProductDetails extends Component {
         >
           Adicionar ao carrinho
         </button>
+
+        <form>
+          <input
+            type="text"
+            name="emailInput"
+            value={ emailInput }
+            onChange={ this.handleChange }
+            data-testid="product-detail-email"
+            placeholder="Email"
+          />
+          <div>
+            <input
+              type="checkbox"
+              data-testid="1-rating"
+              value="1"
+              onChange={ this.handleChange }
+              checked={ isChecked[0] }
+            />
+            <input
+              type="checkbox"
+              data-testid="2-rating"
+              value="2"
+              onChange={ this.handleChange }
+              checked={ isChecked[1] }
+            />
+            <input
+              type="checkbox"
+              data-testid="3-rating"
+              value="3"
+              onChange={ this.handleChange }
+              checked={ isChecked[2] }
+            />
+            <input
+              type="checkbox"
+              data-testid="4-rating"
+              value="4"
+              onChange={ this.handleChange }
+              checked={ isChecked[3] }
+            />
+            <input
+              type="checkbox"
+              data-testid="5-rating"
+              value="5"
+              onChange={ this.handleChange }
+              checked={ isChecked[4] }
+            />
+          </div>
+          <textarea
+            name="detailsInput"
+            value={ detailsInput }
+            onChange={ this.handleChange }
+            cols="30"
+            rows="10"
+            data-testid="product-detail-evaluation"
+            placeholder="Mensagem (opcional)"
+          />
+          <button
+            type="submit"
+            data-testid="submit-review-btn"
+            onClick={ this.submitRating }
+          >
+            Enviar
+          </button>
+        </form>
+        <ul>
+          {evaluations.length > 0 && evaluations.map((evaluation, index) => (
+            <li key={ index }>
+              <p>{evaluation.emailInput}</p>
+              <input type="checkbox" checked={ evaluation.isChecked[0] } readOnly />
+              <input type="checkbox" checked={ evaluation.isChecked[1] } readOnly />
+              <input type="checkbox" checked={ evaluation.isChecked[2] } readOnly />
+              <input type="checkbox" checked={ evaluation.isChecked[3] } readOnly />
+              <input type="checkbox" checked={ evaluation.isChecked[4] } readOnly />
+              <p>{ evaluation.detailsInput }</p>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
