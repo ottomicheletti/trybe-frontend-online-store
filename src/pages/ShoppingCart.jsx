@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 
@@ -47,12 +48,20 @@ class ShoppingCart extends Component {
     }
   };
 
+  toCheckout = () => {
+    const { history } = this.props;
+    history.push('/checkout');
+  }
+
   render() {
     const { productList } = this.state;
     const cartQuantity = productList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <div>
         <Header cartQuantity={ cartQuantity } />
+        <button type="button" data-testid="checkout-products" onClick={ this.toCheckout }>
+          Finalizar Compra
+        </button>
         { productList.length > 0
           ? (
             productList.map(({
@@ -114,5 +123,11 @@ class ShoppingCart extends Component {
     );
   }
 }
+
+ShoppingCart.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default ShoppingCart;
