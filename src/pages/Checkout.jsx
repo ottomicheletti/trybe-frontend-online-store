@@ -94,19 +94,39 @@ Qtd: ${product.quantity} R$ ${product.quantity * product.price}`}
           <fieldset>
             <label htmlFor="boleto">
               Boleto
-              <input type="radio" name="boleto" checked={ isChecked === 'boleto' } onChange={ this.handleChange } />
+              <input
+                type="radio"
+                name="boleto"
+                checked={ isChecked === 'boleto' }
+                onChange={ this.handleChange }
+              />
             </label>
             <label htmlFor="Visa">
               Visa
-              <input type="radio" name="Visa" checked={ isChecked === 'Visa' } onChange={ this.handleChange } />
+              <input
+                type="radio"
+                name="Visa"
+                checked={ isChecked === 'Visa' }
+                onChange={ this.handleChange }
+              />
             </label>
             <label htmlFor="MasterCard">
               MasterCard
-              <input type="radio" name="MasterCard" checked={ isChecked === 'MasterCard' } onChange={ this.handleChange } />
+              <input
+                type="radio"
+                name="MasterCard"
+                checked={ isChecked === 'MasterCard' }
+                onChange={ this.handleChange }
+              />
             </label>
             <label htmlFor="Elo">
               Elo
-              <input type="radio" name="Elo" checked={ isChecked === 'Elo' } onChange={ this.handleChange } />
+              <input
+                type="radio"
+                name="Elo"
+                checked={ isChecked === 'Elo' }
+                onChange={ this.handleChange }
+              />
             </label>
           </fieldset>
         </form>
