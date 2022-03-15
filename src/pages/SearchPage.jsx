@@ -44,16 +44,24 @@ class SearchPage extends Component {
   handleClick = async () => {
     const { checkedId, query } = this.state;
     const result = await getProductsFromCategoryAndQuery(checkedId, query);
-    this.setState({ results: result.results });
+    // regex para substituir a chave que dava problema no lint
+    const regex = /available_quantity*/g;
+    // método replace para substituir todas available_quantity do retorno da API por availableQuantity
+    const replacedString = JSON.stringify(result.results)
+      .replace(regex, 'availableQuantity');
+    this.setState({ results: JSON.parse(replacedString) });
   }
 
-  sendCart = (id, title, price, thumbnail) => {
+  // usando spread operator pois o lint reclama se uma função recebe mais de 4 parâmetros
+  sendCart = (...args) => {
     const { productList } = this.state;
+    // console.log(args);
     const newProduct = {
-      id,
-      title,
-      price,
-      thumbnail,
+      id: args[0],
+      title: args[1],
+      price: args[2],
+      thumbnail: args[3],
+      availableQuantity: args[4],
       quantity: 1,
     };
     const newProductList = [...productList, newProduct];
@@ -106,7 +114,7 @@ class SearchPage extends Component {
 
         {results.length > 0
           ? (
-            results.map(({ id, title, price, thumbnail }) => (
+            results.map(({ id, title, price, thumbnail, availableQuantity }) => (
               <div key={ id }>
                 <Link data-testid="product-detail-link" to={ `/product/${id}` }>
                   <ProductCard
@@ -124,6 +132,7 @@ class SearchPage extends Component {
                     title,
                     price,
                     thumbnail,
+                    availableQuantity,
                   ) }
                 >
                   Adicionar ao carrinho

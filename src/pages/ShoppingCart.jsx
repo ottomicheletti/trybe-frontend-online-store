@@ -55,7 +55,14 @@ class ShoppingCart extends Component {
         <Header cartQuantity={ cartQuantity } />
         { productList.length > 0
           ? (
-            productList.map(({ id, title, price, thumbnail, quantity }, index) => (
+            productList.map(({
+              id,
+              title,
+              price,
+              thumbnail,
+              quantity,
+              availableQuantity,
+            }, index) => (
               <div key={ index }>
                 <ProductCard
                   id={ id }
@@ -74,7 +81,7 @@ class ShoppingCart extends Component {
                 </button>
                 <button
                   data-testid="product-increase-quantity"
-                  // disabled={disabled}
+                  disabled={ quantity >= availableQuantity }
                   name="add"
                   value={ id }
                   onClick={ this.subAndAddItems }
@@ -86,6 +93,7 @@ class ShoppingCart extends Component {
                 <p data-testid="shopping-cart-product-quantity">{ quantity }</p>
                 <button
                   data-testid="product-decrease-quantity"
+                  disabled={ quantity <= 1 }
                   name="sub"
                   value={ id }
                   onClick={ this.subAndAddItems }
