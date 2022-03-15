@@ -34,6 +34,7 @@ class ShoppingCart extends Component {
       Object.assign(itemMatch, { quantity: cont });
       productList.splice(index, 1, itemMatch);
       this.setState({ productList });
+      localStorage.setItem('productList', JSON.stringify(productList));
     } else {
       const cont = itemMatch.quantity > 1
         ? itemMatch.quantity - 1
@@ -41,6 +42,7 @@ class ShoppingCart extends Component {
       Object.assign(itemMatch, { quantity: cont });
       productList.splice(index, 1, itemMatch);
       this.setState({ productList });
+      localStorage.setItem('productList', JSON.stringify(productList));
     }
   };
 
