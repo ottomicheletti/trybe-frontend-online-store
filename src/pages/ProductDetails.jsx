@@ -21,12 +21,14 @@ class ProductDetails extends Component {
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
+    const productListCart = localStorage.getItem('productList');
+    if (productListCart !== null) {
+      this.setState({ productList: JSON.parse(productListCart) });
+    } else {
+      localStorage.setItem('productList', JSON.stringify([]));
+    }
     const results = await getProductDetails(id);
     this.setState({ results });
-    const productListCart = localStorage.getItem('productList');
-    return productListCart
-      ? this.setState({ productList: JSON.parse(productListCart) })
-      : localStorage.setItem('productList', JSON.stringify([]));
   }
 
   sendCart = (id, title, price, thumbnail) => {

@@ -18,15 +18,15 @@ class SearchPage extends Component {
     };
   }
 
-  componentDidMount() {
-    getCategories().then((data) => {
-      this.setState({ categories: data });
-    });
-
+  async componentDidMount() {
     const productListCart = localStorage.getItem('productList');
-    return productListCart
-      ? this.setState({ productList: JSON.parse(productListCart) })
-      : localStorage.setItem('productList', JSON.stringify([]));
+    if (productListCart !== null) {
+      this.setState({ productList: JSON.parse(productListCart) });
+    } else {
+      localStorage.setItem('productList', JSON.stringify([]));
+    }
+    const data = await getCategories();
+    this.setState({ categories: data });
   }
 
   handleChange = ({ target: { value, type } }) => {
