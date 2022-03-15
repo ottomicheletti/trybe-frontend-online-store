@@ -19,7 +19,8 @@ class ShoppingCart extends Component {
 
   removeItemFromCart = ({ target: { value } }) => {
     const { productList } = this.state;
-    const newProductList = productList.filter((product) => product.id !== value);
+    const newProductList = productList
+      .filter((_product, index) => parseInt(value, 10) !== index);
     this.setState({ productList: newProductList });
     localStorage.setItem('productList', JSON.stringify(newProductList));
   }
@@ -64,7 +65,7 @@ class ShoppingCart extends Component {
                 />
                 <button
                   name="remove"
-                  value={ id }
+                  value={ index }
                   onClick={ this.removeItemFromCart }
                   type="button"
                 >
@@ -73,6 +74,7 @@ class ShoppingCart extends Component {
                 </button>
                 <button
                   data-testid="product-increase-quantity"
+                  // disabled={disabled}
                   name="add"
                   value={ id }
                   onClick={ this.subAndAddItems }
