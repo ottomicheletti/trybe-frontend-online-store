@@ -22,7 +22,7 @@ class ProductDetails extends Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const productListCart = localStorage.getItem('productList');
-    if(productListCart !== null) {
+    if (productListCart !== null) {
       this.setState({ productList: JSON.parse(productListCart) });
     } else {
       localStorage.setItem('productList', JSON.stringify([]));
