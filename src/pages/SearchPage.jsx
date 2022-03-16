@@ -126,7 +126,7 @@ class SearchPage extends Component {
                   <div className="product" key={ id }>
                     <Link data-testid="product-detail-link" to={ `/product/${id}` }>
                       {freeShipping
-                        ? <p data-testid="free-shipping">Frete Grátis</p>
+                        ? <p data-testid="free-shipping">Frete Grátis!</p>
                         : null}
                       <ProductCard
                         id={ id }

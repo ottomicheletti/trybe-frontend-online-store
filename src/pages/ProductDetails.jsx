@@ -121,7 +121,7 @@ class ProductDetails extends Component {
                 </p>
                 <img src={ thumbnail } alt={ title } />
                 {freeShipping
-                  ? <p data-testid="free-shipping">Frete Grátis</p>
+                  ? <p data-testid="free-shipping">Frete Grátis!</p>
                   : null}
               </div>
               <ul>
