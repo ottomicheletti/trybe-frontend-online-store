@@ -14,6 +14,7 @@ class ProductDetails extends Component {
         price: '',
         thumbnail: '',
         attributes: [],
+        shipping: { freeShipping: '' },
       },
       productList: [],
       emailInput: '',
@@ -32,7 +33,9 @@ class ProductDetails extends Component {
       localStorage.setItem('productList', JSON.stringify([]));
     }
     const results = await getProductDetails(id);
-    this.setState({ results });
+    const regex = /free_shipping*/g;
+    const replacedString = JSON.stringify(results).replace(regex, 'freeShipping');
+    this.setState({ results: JSON.parse(replacedString) });
 
     const evaluations = localStorage.getItem('evaluations');
     if (evaluations) {
@@ -91,8 +94,19 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const { results:
-      { title, id, price, thumbnail, attributes }, results, productList } = this.state;
+    const {
+      results: {
+        title,
+        id,
+        price,
+        thumbnail,
+        attributes,
+        shipping: {
+          freeShipping,
+        } },
+      results,
+      productList,
+    } = this.state;
     const { emailInput, detailsInput, isChecked, evaluations } = this.state;
     const cartQuantity = productList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
@@ -106,7 +120,9 @@ class ProductDetails extends Component {
                   {`${title} - R$${price}`}
                 </p>
                 <img src={ thumbnail } alt={ title } />
-                <p>0</p>
+                {freeShipping
+                  ? <p data-testid="free-shipping">Frete Grátis</p>
+                  : null}
               </div>
               <ul>
                 {attributes.map((att, index) => (
